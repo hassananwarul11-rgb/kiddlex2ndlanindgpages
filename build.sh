@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 set -e
-echo "Static assets ready in public/"
+node scripts/generate-pages.mjs
+echo "Static landing pages ready in public/"
