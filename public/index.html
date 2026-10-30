@@ -1,65 +1,292 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ShortLink — Simple URL Shortener</title>
-  <meta name="description" content="Create cleaner, easier-to-share links in seconds.">
-  <style>
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(135deg,#f8fafc,#eef2ff);color:#0f172a}
-    .nav{max-width:1120px;margin:auto;padding:24px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{font-weight:800;font-size:22px;letter-spacing:-.4px}
-    .admin-login{font-size:14px;color:#fff;background:#0f172a;text-decoration:none;padding:10px 14px;border-radius:10px;font-weight:700}
-    .hero{min-height:calc(100vh - 80px);display:flex;align-items:center;justify-content:center;padding:40px 20px}
-    .box{width:100%;max-width:760px;text-align:center}
-    h1{font-size:clamp(40px,7vw,72px);line-height:1.02;margin:0 0 18px;letter-spacing:-2px}
-    p{font-size:18px;color:#64748b;line-height:1.7;margin:0 auto 32px;max-width:620px}
-    .shortener{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:14px;display:flex;gap:10px;box-shadow:0 20px 60px rgba(15,23,42,.08)}
-    .shortener input{flex:1;border:0;outline:0;font-size:16px;padding:14px 16px;background:#f8fafc;border-radius:12px}
-    .shortener button{border:0;background:#4f46e5;color:#fff;font-weight:700;padding:0 24px;border-radius:12px;cursor:pointer}
-    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px;text-align:left}
-    .feature{background:rgba(255,255,255,.75);border:1px solid #e2e8f0;border-radius:14px;padding:18px}
-    .feature strong{display:block;margin-bottom:6px}
-    .feature span{font-size:14px;color:#64748b;line-height:1.5}
-    .note{margin-top:18px;font-size:13px;color:#94a3b8}
-    @media(max-width:700px){
-      .shortener{flex-direction:column}
-      .shortener button{padding:14px}
-      .features{grid-template-columns:1fr}
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Landing Manager — Admin</title>
+<style>
+:root{--bg:#070910;--panel:#101522;--stroke:#273249;--text:#f8fafc;--muted:#8f9bb0}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 5% 0%,rgba(139,92,246,.18),transparent 26%),radial-gradient(circle at 95% 8%,rgba(236,72,153,.12),transparent 26%),linear-gradient(145deg,#090d17,#070910 62%);color:var(--text);font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{width:min(1180px,100%);margin:auto;padding:30px 18px 80px}.hidden{display:none!important}
+.card{background:linear-gradient(145deg,rgba(17,23,36,.96),rgba(12,17,28,.96));border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:20px;box-shadow:0 18px 48px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.025)}
+.login{max-width:430px;margin:11vh auto 0;padding:26px}.shell{display:grid;grid-template-columns:290px 1fr;gap:20px}.sidebar{position:sticky;top:18px;align-self:start}
+.brand{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:16px}.brand>div{min-width:0}#adminHost{word-break:break-all;font-size:12px}#newBtn{flex-shrink:0;white-space:nowrap}h1,h2,h3{margin:0;letter-spacing:-.35px}.muted{color:var(--muted)}
+.pages{display:grid;gap:9px;margin-top:15px}.pageitem{padding:12px 13px;border:1px solid #273147;border-radius:15px;background:linear-gradient(145deg,#0d1320,#0a0f19);cursor:pointer;transition:.18s ease}
+.pageitem:hover{transform:translateY(-1px);border-color:#3a4866}.pageitem.active{border-color:rgba(139,92,246,.75);background:linear-gradient(145deg,rgba(139,92,246,.16),rgba(34,211,238,.06))}
+.pageitem strong{display:block}.pageitem small{color:#91a0b8}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:17px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.full{grid-column:1/-1}
+label{display:block;font-size:12px;font-weight:850;color:#cbd5e1;margin:0 0 7px}
+input{width:100%;padding:13px 14px;border-radius:14px;border:1px solid #2a354c;background:linear-gradient(145deg,#0b101a,#0a0f18);color:#fff;outline:none}
+input:focus{border-color:#7c68e8;box-shadow:0 0 0 3px rgba(139,92,246,.11)}
+button{border:1px solid transparent;border-radius:14px;padding:11px 15px;font-weight:850;cursor:pointer}
+.primary{background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff}.secondary{background:linear-gradient(145deg,#202b40,#182235);border-color:#303c55;color:#fff}.danger{background:linear-gradient(145deg,#3a1723,#28121a);border-color:#55202f;color:#ff9fb3}
+.btnrow{display:flex;gap:9px;flex-wrap:wrap}.section{margin-bottom:19px}.status{min-height:22px;color:#a5b0c3;margin-top:11px}.slugpreview{font-size:13px;color:#aab4c6;margin-top:7px;word-break:break-all}
+.notice{padding:13px 14px;border:1px solid rgba(34,211,238,.2);border-radius:14px;background:rgba(34,211,238,.06);color:#b9c7d8}
+@media(max-width:850px){.shell{grid-template-columns:1fr}.sidebar{position:static}.grid{grid-template-columns:1fr}.full{grid-column:auto}.top{align-items:flex-start;flex-direction:column}}
+</style>
 </head>
 <body>
-  <div class="nav">
-    <div class="brand">ShortLink</div>
-    <a class="admin-login" href="/admin/">Admin Login</a>
+<div class="wrap">
+<section id="login" class="card login">
+  <h1>Admin Login</h1>
+  <p class="muted">Landing page manager</p>
+  <label>Password</label>
+  <input id="password" type="password" placeholder="Admin password">
+  <div style="height:12px"></div>
+  <button id="loginBtn" class="primary">Login</button>
+  <div id="loginStatus" class="status"></div>
+</section>
+
+<section id="app" class="hidden">
+<div class="shell">
+<aside class="card sidebar">
+  <div class="brand">
+    <div><h2>Landing Links</h2><div class="muted" id="adminHost"></div></div>
+    <button id="newBtn" class="primary">+ New</button>
+  </div>
+  <div id="pagesList" class="pages"></div>
+  <div style="height:14px"></div>
+  <button id="logoutBtn" class="secondary" style="width:100%">Logout</button>
+</aside>
+
+<main>
+  <div id="empty" class="card">
+    <h2>No link selected</h2>
+    <p class="muted">Select a landing link or create a new one.</p>
   </div>
 
-  <main class="hero">
-    <section class="box">
-      <h1>Shorten links.<br>Share smarter.</h1>
-      <p>Turn long, messy URLs into clean links that are easier to share anywhere.</p>
-
-      <div class="shortener">
-        <input type="url" placeholder="Paste a long URL here" aria-label="Long URL">
-        <button type="button" onclick="showDemo()">Shorten URL</button>
+  <div id="editor" class="hidden">
+    <div class="top">
+      <div>
+        <h1>Edit Landing Link</h1>
+        <div id="liveUrl" class="slugpreview"></div>
       </div>
-
-      <div id="demo" class="note">Simple, fast and easy to use.</div>
-
-      <div class="features">
-        <div class="feature"><strong>Fast</strong><span>Create clean links in seconds.</span></div>
-        <div class="feature"><strong>Simple</strong><span>No clutter. Just a straightforward experience.</span></div>
-        <div class="feature"><strong>Shareable</strong><span>Cleaner links for social, chat and web.</span></div>
+      <div class="btnrow">
+        <button id="openBtn" class="secondary">Open Page ↗</button>
+        <button id="deleteBtn" class="danger">Delete</button>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <script>
-    function showDemo(){
-      document.getElementById('demo').textContent='URL shortening is currently available through our managed links.';
+    <div class="card section">
+      <h3>Landing Settings</h3>
+      <div style="height:12px"></div>
+      <div class="grid">
+        <div>
+          <label>Slug</label>
+          <input id="slug" placeholder="new-link">
+          <div class="slugpreview"><span id="slugOrigin"></span>/<span id="slugText">...</span></div>
+        </div>
+        <div>
+          <label>Redirect Delay (seconds)</label>
+          <input id="delay" type="number" min="0" max="60" step="0.1" value="3">
+        </div>
+        <div class="full">
+          <label>Destination URL</label>
+          <input id="destination" type="url" placeholder="https://example.com/...">
+        </div>
+      </div>
+      <div style="height:16px"></div>
+      <div class="notice">Every slug uses the same landing design and the same shared images: <strong>/assets/1.webp</strong> to <strong>/assets/18.webp</strong>.</div>
+    </div>
+
+    <div class="card">
+      <div class="btnrow">
+        <button id="saveBtn" class="primary">Save All Changes</button>
+        <button id="reloadBtn" class="secondary">Reload</button>
+      </div>
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+</main>
+</div>
+</section>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let password=sessionStorage.getItem("landing_admin_password")||"";
+let db={links:{}};
+let selected=null;
+let originalSlug=null;
+let persistedSlugs=new Set();
+
+const RESERVED=new Set(["admin","api","assets","functions","404","favicon.ico","robots.txt","sitemap.xml"]);
+const makeId=()=>{try{return crypto.randomUUID()}catch{return "link-"+Date.now()+"-"+Math.random().toString(36).slice(2)}};
+const cleanSlug=s=>String(s||"").toLowerCase().trim().replace(/[^a-z0-9-]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);
+const esc=s=>String(s||"").replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+
+async function verifyPassword(){
+  const r=await fetch("/api/auth",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({password})});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(d.error||"Wrong password");
+}
+
+async function load(){
+  const r=await fetch("/api/config",{cache:"no-store"});
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.error||"Could not load links");
+  db={links:d.links||{}};
+  for(const [slug,item] of Object.entries(db.links)){
+    if(!item.linkId)item.linkId="legacy-"+slug;
+  }
+  persistedSlugs=new Set(Object.keys(db.links));
+  renderList();
+}
+
+function renderList(){
+  const box=$("pagesList");
+  box.innerHTML="";
+  const slugs=Object.keys(db.links||{}).sort();
+  if(!slugs.length){
+    box.innerHTML='<div class="muted">No landing links yet.</div>';
+    return;
+  }
+  for(const slug of slugs){
+    const el=document.createElement("div");
+    el.className="pageitem"+(selected===slug?" active":"");
+    el.innerHTML="<strong>/"+esc(slug)+"</strong><small>"+esc(db.links[slug].destination||"")+"</small>";
+    el.onclick=()=>selectLink(slug);
+    box.appendChild(el);
+  }
+}
+
+function selectLink(slug){
+  selected=slug;
+  originalSlug=slug;
+  const item=db.links[slug];
+  $("empty").classList.add("hidden");
+  $("editor").classList.remove("hidden");
+  $("slug").value=slug;
+  $("destination").value=item.destination||"";
+  $("delay").value=(Number(item.delay||0)/1000);
+  updateUrl();
+  renderList();
+}
+
+function newLink(){
+  let base="new-link",slug=base,i=2;
+  while(db.links[slug])slug=base+"-"+i++;
+  db.links[slug]={linkId:makeId(),destination:"https://example.com/",delay:3000};
+  selectLink(slug);
+  $("slug").select();
+}
+
+function slugProblem(slug){
+  if(!slug)return "Slug is required.";
+  if(RESERVED.has(slug))return "This slug is reserved.";
+  if(slug!==originalSlug && db.links[slug])return "This slug is already used.";
+  if(slug!==originalSlug && persistedSlugs.has(slug))return "This slug is still reserved by a saved link.";
+  return "";
+}
+
+function updateUrl(){
+  const s=cleanSlug($("slug").value);
+  $("slugText").textContent=s||"...";
+  $("liveUrl").textContent=s?location.origin+"/"+s:"";
+  const problem=slugProblem(s);
+  $("slug").style.borderColor=problem?"#ef476f":"";
+  $("slug").title=problem||"Slug available";
+}
+
+function collect(){
+  const current=db.links[originalSlug]||db.links[selected]||{};
+  const seconds=Number($("delay").value);
+  return {
+    linkId:current.linkId||makeId(),
+    destination:$("destination").value.trim(),
+    ...(current.desktopDestination?{desktopDestination:current.desktopDestination}:{}),
+    delay:Number.isFinite(seconds)&&seconds>=0?Math.round(seconds*1000):3000
+  };
+}
+
+function deleteLink(){
+  if(!selected)return;
+  if(!confirm("Delete /"+selected+" ?"))return;
+  delete db.links[selected];
+  selected=null;
+  originalSlug=null;
+  $("editor").classList.add("hidden");
+  $("empty").classList.remove("hidden");
+  renderList();
+  $("status").textContent="Link removed locally. Click Save All Changes to publish.";
+}
+
+async function saveAll(){
+  if(selected){
+    const newSlug=cleanSlug($("slug").value);
+    const problem=slugProblem(newSlug);
+    if(problem){$("status").textContent="❌ "+problem;return}
+
+    const item=collect();
+    if(!/^https?:\/\//i.test(item.destination)){
+      $("status").textContent="❌ Destination must start with http:// or https://.";
+      return;
     }
-  </script>
+    if(item.delay<0||item.delay>60000){
+      $("status").textContent="❌ Delay must be between 0 and 60 seconds.";
+      return;
+    }
+
+    if(originalSlug&&originalSlug!==newSlug)delete db.links[originalSlug];
+    db.links[newSlug]=item;
+    selected=newSlug;
+    originalSlug=newSlug;
+  }
+
+  $("saveBtn").disabled=true;
+  $("status").textContent="Saving…";
+
+  try{
+    const r=await fetch("/api/save",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({password,links:db.links})});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(d.error||"Save failed");
+    if(!d.verified)throw new Error("Save verification failed.");
+
+    $("status").textContent="✅ Saved successfully.";
+    await load();
+    if(selected&&db.links[selected])selectLink(selected);
+  }catch(e){
+    $("status").textContent="❌ "+e.message;
+  }finally{
+    $("saveBtn").disabled=false;
+  }
+}
+
+async function login(){
+  password=$("password").value;
+  if(!password){$("loginStatus").textContent="Enter your password.";return}
+  $("loginStatus").textContent="Checking…";
+  try{
+    await verifyPassword();
+    sessionStorage.setItem("landing_admin_password",password);
+    $("login").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    await load();
+    $("loginStatus").textContent="";
+  }catch(e){
+    $("loginStatus").textContent="❌ "+e.message;
+  }
+}
+
+$("loginBtn").onclick=login;
+$("password").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
+$("logoutBtn").onclick=()=>{sessionStorage.removeItem("landing_admin_password");location.reload()};
+$("newBtn").onclick=newLink;
+$("deleteBtn").onclick=deleteLink;
+$("saveBtn").onclick=saveAll;
+$("reloadBtn").onclick=()=>load().then(()=>{if(selected&&db.links[selected])selectLink(selected)}).catch(e=>$("status").textContent="❌ "+e.message);
+$("slug").addEventListener("input",updateUrl);
+$("openBtn").onclick=()=>{const s=cleanSlug($("slug").value);if(s)window.open("/"+s,"_blank")};
+
+$("adminHost").textContent=location.host;
+$("slugOrigin").textContent=location.origin;
+
+if(password){
+  $("password").value=password;
+  verifyPassword()
+    .then(()=>{$("login").classList.add("hidden");$("app").classList.remove("hidden");return load()})
+    .catch(()=>{sessionStorage.removeItem("landing_admin_password");password=""});
+}
+</script>
 </body>
 </html>
