@@ -3,7 +3,7 @@
     "linkId": "legacy-deru",
     "destination": "https://bb.urlxx341.com?utm_source=jack&utm_medium=TANK",
     "desktopDestination": "https://www.google.com/?utm_source=jack&utm_medium=TANK",
-    "delay": 3000
+    "delay": 500
   },
   "gyro": {
     "linkId": "legacy-gyro",
