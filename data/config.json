@@ -56,5 +56,10 @@
     "linkId": "255f2b8b-7a56-455b-8faf-463b2b92b337",
     "destination": "https://cric.booss12.com/?utm_source=Deepal&utm_medium=Vicky",
     "delay": 2000
+  },
+  "new-linksadasdsa": {
+    "linkId": "e2f8cbdf-2237-4949-8932-729007cb7d32",
+    "destination": "https://example.com/",
+    "delay": 3000
   }
 }
