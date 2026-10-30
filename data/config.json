@@ -66,5 +66,10 @@
     "linkId": "ff403e38-8df1-4c20-a885-52e63d42655c",
     "destination": "https://example.com/",
     "delay": 3000
+  },
+  "hemri111": {
+    "linkId": "726c054a-71f0-4475-a499-3a4d6da125fd",
+    "destination": "https://cric.booss12.com/?utm_source=Deepal&utm_medium=Vicky111",
+    "delay": 3000
   }
 }
