@@ -71,5 +71,15 @@
     "linkId": "726c054a-71f0-4475-a499-3a4d6da125fd",
     "destination": "https://cric.booss12.com/?utm_source=Deepal&utm_medium=Vicky111",
     "delay": 3000
+  },
+  "new-link": {
+    "linkId": "87e59111-262c-44a6-a023-4348ec30968b",
+    "destination": "https://example.com/",
+    "delay": 3000
+  },
+  "khammair": {
+    "linkId": "2534e2ae-dbf1-46f7-8a9e-b833c73f7a9f",
+    "destination": "https://cric.booss12.com/?utm_source=Deepal&utm_medium=Khan",
+    "delay": 500
   }
 }
